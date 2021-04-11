@@ -28,13 +28,8 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Saving image to file
-        run: mkdir docker_image && docker save -o docker_image/${IMAGE_NAME}_saved $IMAGE_NAME
-        env:
-          $IMAGE_NAME: ${{env.IMAGE_NAME}}
-
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_HUB_PAT }}" | docker login -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.DOCKER_HUB_PAT }}" | docker login -u ${{ secrets.DOCKER_HUB_LOGIN }} --password-stdin
 
       - name: Push image
         run: |
